@@ -11,7 +11,7 @@ export default defineConfig({
 	prefetch: {
 		defaultStrategy: "hover",
 	},
-	trailingSlash: "never",
+	trailingSlash: "always",
 	image: {
 		responsiveStyles: true,
 		layout: "constrained",
