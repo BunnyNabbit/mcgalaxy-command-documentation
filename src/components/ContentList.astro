@@ -11,7 +11,7 @@ const post = Astro.props.post
 				if (ozherPost.id.startsWith(`${post.id}/`) && (!post.data.indexListOnlyCategories || ozherPost.data.isIndex)) {
 					return (
 						<li>
-							<a href={`/${ozherPost.id}`}>{ozherPost.data.title}</a> — {ozherPost.data.summary}
+							<a href={`/${ozherPost.id}/`}>{ozherPost.data.title}</a> — {ozherPost.data.summary}
 						</li>
 					)
 				}
