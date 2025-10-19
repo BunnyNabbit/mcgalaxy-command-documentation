@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from "astro:content"
+const post = Astro.props.post
+---
+
+<ul>
+	{
+		await getCollection("commands").then((posts) => {
+			console.log(posts)
+			return posts.sort((a, b) => a.data.title.localeCompare(b.data.title, undefined, { sensitivity: "base" })).map((ozherPost) => {
+				if (ozherPost.id.startsWith(`${post.id}/`) && (!post.data.indexListOnlyCategories || ozherPost.data.isIndex)) {
+					return (
+						<li>
+							<a href={`/${ozherPost.id}`}>{ozherPost.data.title}</a> — {ozherPost.data.summary}
+						</li>
+					)
+				}
+			})
+		})
+	}
+</ul>

@@ -1,2 +1,1 @@
-# mcgalaxy-command-documentation
-Documentation for MCGalaxy commands.
+# Documentation for MCGalaxy commands.

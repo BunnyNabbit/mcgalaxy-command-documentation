@@ -1,0 +1,113 @@
+---
+import Header from "../components/Header.astro"
+import Footer from "../components/Footer.astro"
+import getCanonicalURL from "../shared/getCanonicalURL.mjs"
+import Hreflangs from "../components/Hreflangs.astro"
+import { ClientRouter } from "astro:transitions"
+const { frontmatter } = Astro.props
+let { title } = Astro.props
+let tabTitle
+if (!title) title = frontmatter.title
+if (title !== "Documentation for MCGalaxy commands") {
+	tabTitle = title + " - MCGalaxy commands"
+} else {
+	tabTitle = "MCGalaxy commands"
+}
+let canon
+if (Astro.props.canon) {
+	canon = getCanonicalURL(Astro.props.canon)
+} else {
+	let pathname = Astro.url.pathname
+	if (Astro.url.pathname.endsWith("/")) {
+		pathname = Astro.url.pathname.slice(0, -1)
+	}
+	canon = getCanonicalURL(pathname)
+}
+const description = Astro.props.description
+const ogImage = Astro.props.ogImage
+const includeH1 = Astro.props.includeH1 ?? true
+const noIndex = Astro.props.noIndex ?? false
+const language = Astro.props.language ?? "en"
+const hreflangs = Astro.props.hreflangs
+---
+
+<html lang={language}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href="/favicon.webp" type="image/webp" />
+		<link rel="canonical" href={canon} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<title>{tabTitle}</title>
+		<meta property="theme-color" content="#00A7FF" />
+		<meta property="og:title" content={tabTitle} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Documentation for MCGalaxy commands" />
+		<meta property="og:url" content={canon} />
+		{
+			description && (
+				<>
+					<meta name="description" content={description} />
+					<meta property="og:description" content={description} />
+				</>
+			)
+		}
+		{
+			ogImage && (
+				<>
+					<meta property="og:image" content={ogImage.url} />
+					<meta property="og:image:alt" content={ogImage.alt} />
+					<meta property="twitter:card" content="summary_large_image" />
+				</>
+			)
+		}
+		{noIndex && <meta name="robots" content="noindex" />}
+		{hreflangs && <Hreflangs hreflangs={hreflangs} />}
+		<ClientRouter />
+	</head>
+	<body>
+		<Header />
+		<main>
+			{includeH1 && <h1>{title}</h1>}
+			<slot />
+		</main>
+		<div class="page-padding"></div>
+		<Footer />
+	</body><style is:global>
+		* {
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		:root {
+			color-scheme: light dark;
+		}
+		h1 {
+			font-size: 2rem;
+		}
+		p {
+			overflow-x: auto;
+			overflow-y: hidden;
+		}
+		body {
+			min-height: 100vh;
+			position: relative;
+			margin: 0;
+		}
+		main,
+		nav {
+			padding: 1rem;
+		}
+		code {
+			background-color: #f1f1f1;
+			padding: 2px 4px;
+			border-radius: 4px;
+			font-family: monospace;
+			color: black;
+		}
+		a {
+			color: rgb(255, 145, 66);
+		}
+		a:visited {
+			color: rgb(255, 187, 60);
+		}
+	</style>
+</html>

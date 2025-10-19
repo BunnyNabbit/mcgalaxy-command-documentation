@@ -1,0 +1,28 @@
+---
+import { getCollection, render } from "astro:content"
+import ContentPage from "../layouts/ContentPage.astro"
+import WikiLinks from "../components/WikiLinks.astro"
+import ContentList from "../components/ContentList.astro"
+// 1. Generate a new path for every collection entry
+export async function getStaticPaths() {
+	const posts = await getCollection("commands")
+	console.log(posts)
+	return posts.map((post) => ({
+		params: {
+			id: post.id,
+			language: post.id.split("/")[0],
+		},
+		props: { post },
+	}))
+}
+// 2. For your template, you can get the entry directly from the prop
+const { post } = Astro.props
+const { language } = Astro.params
+const { Content } = await render(post)
+---
+
+<ContentPage title={post.data.title} includeH1={false} description={post.data.summary} noIndex={post.data.noIndex} language={language}>
+	<WikiLinks {post} />
+	<Content />
+	{post.data.isIndex && <ContentList {post} />}
+</ContentPage>

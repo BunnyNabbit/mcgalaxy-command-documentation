@@ -1,0 +1,42 @@
+---
+const category = Astro.props.category
+const post = Astro.props.post
+---
+
+<style>
+	.wiki-links {
+		padding: 5px;
+		background-color: light-dark(#f1f1f1, #333);
+		border: 1px solid light-dark(#ccc, #555);
+	}
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	li {
+		display: inline-block;
+		border-left: 1px solid light-dark(#ccc, #555);
+		padding-left: 4px;
+	}
+	li:first-child {
+		border-left: none;
+		padding-left: 0;
+	}
+</style>
+<div class="wiki-links">
+	<ul>
+		{
+			category && (
+				<li>
+					<span>
+						Category: <a href={`/${category.id}`}>{category.data.title}</a>
+					</span>
+				</li>
+			)
+		}
+		<li>
+			<a href={`https://github.com/BunnyNabbit/mcgalaxy-command-documentation/edit/main/src/commands/${post.id}.md`} target="_blank" rel="noopener noreferrer"> Edit on GitHub </a>
+		</li>
+	</ul>
+</div>
