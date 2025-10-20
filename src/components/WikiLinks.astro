@@ -1,6 +1,8 @@
 ---
-const category = Astro.props.category
+import { getEntry } from "astro:content"
 const post = Astro.props.post
+const parentPost = await getEntry("commands", post.id.split("/").slice(0, -1).join("/") || "🦆💨")
+
 ---
 
 <style>
@@ -27,10 +29,10 @@ const post = Astro.props.post
 <div class="wiki-links">
 	<ul>
 		{
-			category && (
+			parentPost && (
 				<li>
 					<span>
-						Category: <a href={`/${category.id}/`}>{category.data.title}</a>
+						Parent: <a href={`/${parentPost.id}/`}>{parentPost.data.title}</a>
 					</span>
 				</li>
 			)
